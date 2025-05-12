@@ -6,8 +6,10 @@ import java.util.Optional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.jsl.config.JwtUtil;
 import com.jsl.dto.CompanyRegistrationRequest;
 import com.jsl.dto.LoginRequest;
+import com.jsl.dto.LoginResponse;
 import com.jsl.entity.Company;
 import com.jsl.exception.ApiException;
 import com.jsl.mapper.CompanyMapper;
@@ -18,11 +20,13 @@ public class AuthServiceImpl implements AuthService {
 
 	private final CompanyRepository repository;
 	private final PasswordEncoder passwordEncoder;
+	private final JwtUtil jwtUtil;
 
-	public AuthServiceImpl(CompanyRepository repository, PasswordEncoder passwordEncoder) {
+	public AuthServiceImpl(CompanyRepository repository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
 		super();
 		this.repository = repository;
 		this.passwordEncoder = passwordEncoder;
+		this.jwtUtil = jwtUtil;
 	}
 
 	private String generateRegistrationNumber(String company) {
@@ -52,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
 
 	}
 
-	public void login(LoginRequest request) {
+	public String login(LoginRequest request) {
 		Company company = repository.findByEmail(request.getEmail())
 				.orElseThrow(()-> new ApiException("Invalid email"));
 
@@ -60,6 +64,8 @@ public class AuthServiceImpl implements AuthService {
 //			throw new RuntimeException("Invalid Password");
 			throw new ApiException("Invalid Password");
 		}
+		
+		return jwtUtil.generateToken(company.getEmail());
 
 	}
 

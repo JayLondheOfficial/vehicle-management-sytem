@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jsl.dto.CompanyRegistrationRequest;
 import com.jsl.dto.LoginRequest;
+import com.jsl.dto.LoginResponse;
 import com.jsl.entity.Company;
 import com.jsl.repository.CompanyRepository;
 import com.jsl.service.auth.AuthService;
@@ -33,10 +34,10 @@ public class AuthController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody @Valid LoginRequest request) {
+	public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
 
-		service.login(request);
-		return ResponseEntity.ok("Login Successfull");
+	String token = service.login(request);
+		return ResponseEntity.ok(new LoginResponse("Login Successfull", token));
 
 	}
 
