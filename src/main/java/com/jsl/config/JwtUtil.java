@@ -34,11 +34,14 @@ public class JwtUtil {
 	}
 
 	// Generate JWT token
-	public String generateToken(String email) {
+	public String generateToken(String email, String role) {
+		Map<String, Object> claims = new HashMap<>();
+		claims.put("role", role);
 		Instant now = Instant.now();
 		Instant expiry = now.plusMillis(expirationTime);
 		
 		return Jwts.builder()
+				.claims(claims)
 				.subject(email)
 				.issuedAt(Date.from(now))
 				.expiration(Date.from(expiry))
@@ -72,7 +75,7 @@ public class JwtUtil {
 		return claims.get("sub", String.class);
 	}
 
-	private Claims getClaims(String token) {
+	public Claims getClaims(String token) {
 		return Jwts
 				.parser()
 				.verifyWith(secretKey)

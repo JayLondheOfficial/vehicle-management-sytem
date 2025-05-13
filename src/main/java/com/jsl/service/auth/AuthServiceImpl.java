@@ -51,6 +51,7 @@ public class AuthServiceImpl implements AuthService {
 		String registrationNumber = generateRegistrationNumber(request.getCompanyName());
 		company.setRegistrationNumber(registrationNumber);
 		company.setPassword(passwordEncoder.encode(company.getPassword()));
+		company.setRole("ROLE_USER");
 
 		repository.save(company);
 
@@ -65,7 +66,7 @@ public class AuthServiceImpl implements AuthService {
 			throw new ApiException("Invalid Password");
 		}
 		
-		return jwtUtil.generateToken(company.getEmail());
+		return jwtUtil.generateToken(company.getEmail(), company.getRole());
 
 	}
 

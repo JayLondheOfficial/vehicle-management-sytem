@@ -24,12 +24,7 @@ public class Company {
 	private String email;
 	private String password;
 	
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
+	
 	private String contactFirstName;
 	private String contactLastName;
 	
@@ -39,6 +34,15 @@ public class Company {
 	private String city;
 	private String country;
 	private String registrationNumber;
+	
+	private String role;
+	
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
 	private LocalDateTime createdAt = LocalDateTime.now();
 
 	public LocalDateTime getCreatedAt() {
@@ -116,7 +120,12 @@ public class Company {
 		this.registrationNumber = registrationNumber;
 	}
 	
-	
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	
 
 }
